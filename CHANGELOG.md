@@ -28,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and `XarrayIO.to_netcdf_file()` ([#314](https://github.com/Open-EO/openeo-python-client/issues/314))
 - Changed argument name of `Connection.describe_collection()` from `name` to `collection_id` 
   to be more in line with other methods/functions.
+- Rework and improve `openeo.UDF` helper class for UDF usage: allow loading from local file,
+  autodetect `runtime` from source code, ensure proper `from_parameter` value ([#312](https://github.com/Open-EO/openeo-python-client/issues/312))
 
 ### Removed
 
