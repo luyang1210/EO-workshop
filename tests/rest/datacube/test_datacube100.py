@@ -2004,10 +2004,6 @@ class TestUDF:
         }
 
     def test_apply_udf_runtime_detection(self, con100, requests_mock):
-        requests_mock.get(API_URL + "/udf_runtimes", json={
-            "Python": {"type": "language", "default": "3", "versions": {"3": {"libraries": {}}}},
-        })
-
         udf = UDF("def foo(x):\n    return x\n")
         cube = con100.load_collection("S2")
         res = cube.apply(udf)
@@ -2030,12 +2026,7 @@ class TestUDF:
         ("udf-code-py.txt", "def foo(x):\n    return x\n", "Python"),
         ("udf-code.r", "# R code here\n", "R"),
     ])
-    def test_apply_udf_load_from_file(self, con100, requests_mock, tmp_path, filename, udf_code, expected_runtime):
-        requests_mock.get(API_URL + "/udf_runtimes", json={
-            "Python": {"type": "language", "default": "3", "versions": {"3": {"libraries": {}}}},
-            "R": {"type": "language", "default": "3", "versions": {"3": {"libraries": {}}}},
-        })
-
+    def test_apply_udf_load_from_file(self, con100, tmp_path, filename, udf_code, expected_runtime):
         path = tmp_path / filename
         path.write_text(udf_code)
 
@@ -2059,11 +2050,7 @@ class TestUDF:
         ({"version": "3.8"},),
         ({"context": {"color": "red"}},),
     ])
-    def test_apply_udf_version_and_context(self, con100, requests_mock, kwargs):
-        requests_mock.get(API_URL + "/udf_runtimes", json={
-            "Python": {"type": "language", "default": "3", "versions": {"3": {"libraries": {}}}},
-        })
-
+    def test_apply_udf_version_and_context(self, con100, kwargs):
         udf = UDF("def foo(x):\n    return x\n", **kwargs)
         cube = con100.load_collection("S2")
         res = cube.apply(udf)
@@ -2082,11 +2069,7 @@ class TestUDF:
             }},
         }
 
-    def test_simple_apply_udf(self, con100, requests_mock):
-        requests_mock.get(API_URL + "/udf_runtimes", json={
-            "Python": {"type": "language", "default": "3", "versions": {"3": {"libraries": {}}}},
-        })
-
+    def test_simple_apply_udf(self, con100):
         udf = UDF("def foo(x):\n    return x\n")
         cube = con100.load_collection("S2")
         res = cube.apply(udf)
@@ -2110,11 +2093,7 @@ class TestUDF:
             "result": True,
         }
 
-    def test_simple_apply_dimension_udf(self, con100, requests_mock):
-        requests_mock.get(API_URL + "/udf_runtimes", json={
-            "Python": {"type": "language", "default": "3", "versions": {"3": {"libraries": {}}}},
-        })
-
+    def test_simple_apply_dimension_udf(self, con100):
         udf = UDF("def foo(x):\n    return x\n")
         cube = con100.load_collection("S2")
         res = cube.apply_dimension(process=udf, dimension="t")
@@ -2139,11 +2118,7 @@ class TestUDF:
             "result": True,
         }
 
-    def test_simple_reduce_dimension_udf(self, con100, requests_mock):
-        requests_mock.get(API_URL + "/udf_runtimes", json={
-            "Python": {"type": "language", "default": "3", "versions": {"3": {"libraries": {}}}},
-        })
-
+    def test_simple_reduce_dimension_udf(self, con100):
         udf = UDF("def foo(x):\n    return x\n")
         cube = con100.load_collection("S2")
         res = cube.reduce_dimension(reducer=udf, dimension="t")
@@ -2168,11 +2143,7 @@ class TestUDF:
             "result": True,
         }
 
-    def test_simple_apply_neighborhood_udf(self, con100, requests_mock):
-        requests_mock.get(API_URL + "/udf_runtimes", json={
-            "Python": {"type": "language", "default": "3", "versions": {"3": {"libraries": {}}}},
-        })
-
+    def test_simple_apply_neighborhood_udf(self, con100):
         udf = UDF("def foo(x):\n    return x\n")
         cube = con100.load_collection("S2")
         res = cube.apply_neighborhood(process=udf, size=27)
